@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Relatórios - My Agent App{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 600;">Relatórios de Análise</h2>
+
+{% if reports %}
+<div class="report-list">
+    {% for r in reports %}
+    <a href="/reports/{{ r.id }}" class="report-card">
+        <div class="report-card-header">
+            <span class="report-id">{{ r.id | string | truncate(8, True, '') }}</span>
+            <span class="badge {{ r.badge_class }}">{{ r.status }}</span>
+        </div>
+        <p class="report-summary">{{ r.summary or "Sem resumo disponível" }}</p>
+        <span class="report-date">{{ r.created_at.strftime('%d/%m/%Y %H:%M') }}</span>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>Nenhum relatório encontrado.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_style %}
+.report-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.report-card {
+    display: block;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    color: #e2e8f0;
+    transition: border-color 0.15s;
+}
+.report-card:hover {
+    border-color: #2563eb;
+}
+.report-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.report-id {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+.report-summary {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+.report-date {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+{% endblock %}
